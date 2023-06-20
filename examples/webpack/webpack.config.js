@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-const path = require('path');
-const webpack = require('webpack');
+const path = require('node:path');
+const {ProvidePlugin} = require('webpack');
 
 /**
  * Common configuration for both Node.js and Web
@@ -18,10 +18,10 @@ const baseConfig = {
     extensions: ['.js'],
     fallback: {
       // Polyfill for Node.js core modules
-      events: require.resolve('events/'),
-      process: require.resolve('process/browser'),
       assert: require.resolve('assert/'),
       buffer: require.resolve('buffer/'),
+      events: require.resolve('events/'),
+      process: require.resolve('process/browser'),
       util: require.resolve('util/'),
     },
   },
@@ -37,7 +37,9 @@ const nodeConfig = {
   output: {
     filename: 'bundle-node.js',
     path: path.resolve(__dirname, 'dist'),
-    libraryTarget: 'umd', // We can use `commonjs2` for Node.js
+    library: {
+      type: 'umd', // We can use `commonjs2` for Node.js
+    },
   },
 };
 
@@ -46,20 +48,21 @@ const nodeConfig = {
  */
 const webConfig = {
   ...baseConfig,
-
   name: 'web',
   target: 'web', // For browsers
   output: {
     filename: 'bundle-web.js',
     path: path.resolve(__dirname, 'dist'),
-    library: 'LoopBack',
-    libraryTarget: 'umd',
+    library: {
+      name: 'LoopBack',
+      type: 'umd',
+    },
   },
   plugins: [
-    new webpack.ProvidePlugin({
+    new ProvidePlugin({
       Buffer: ['buffer', 'Buffer'],
     }),
-    new webpack.ProvidePlugin({process: ['process']}),
+    new ProvidePlugin({process: ['process']}),
   ],
 };
 

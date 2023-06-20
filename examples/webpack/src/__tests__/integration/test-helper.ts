@@ -4,13 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {once} from 'events';
-import path from 'path';
+import {once} from 'node:events';
+import path from 'node:path';
 
-const runShell = require('@loopback/build').runShell;
+const {runShell} = require('@loopback/build');
 
 export function assertGreetings(greetings: string[]) {
-  greetings = greetings.map(g => g.replace(/\[[^\[\]]+\] /, ''));
+  greetings = greetings.map(g => g.replace(/\[[^\[\]]+] /, ''));
   expect(greetings).to.eql([
     '(en) Hello, Jane!',
     'Hello, John!',

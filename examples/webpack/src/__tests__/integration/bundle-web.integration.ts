@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect, skipIf} from '@loopback/testlab';
-import fs from 'fs';
+import fs from 'node:fs';
 import {Suite} from 'mocha';
-import path from 'path';
+import path from 'node:path';
 import puppeteer, {Browser} from 'puppeteer';
-import url from 'url';
+import url from 'node:url';
 import {generateBundle} from './test-helper';
 
 //
@@ -60,7 +60,7 @@ skipIf<[(this: Suite) => void], void>(
 
     it('should see the page with greetings', () => {
       let body = html;
-      body = body.replace(/\[[^\[\]]+\] /g, '');
+      body = body.replace(/\[[^\[\]]+] /g, '');
       expect(body).to.match(/<li>\(en\) Hello, Jane!<\/li>/);
       expect(body).to.match(/<li>Hello, John!<\/li>/);
       expect(body).to.match(/<li>\(zh\) 你好，John！<\/li>/);
